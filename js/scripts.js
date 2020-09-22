@@ -54,23 +54,6 @@
     // Collapse the navbar when page is scrolled
     $(window).scroll(navbarCollapse);
   
-         function sendMail(){
-            'use strict';
-
-            let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
-            width=800,height=300,left=0,top=0`;
-
-            //open('mailto:me@me.com', 'test', params);
-            PopupCenter('mailto:knnmithras@gmail.com','Mail Developer', 1000, 800)
-         }
-
-         function PopupCenter(pageURL, title,w,h) {
-           var left = (screen.width/2)-(w/2);
-           var top = (screen.height/2)-(h/2);
-           var targetWin = window.open (pageURL, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
-           return targetWin;
-         } 
-       
     // Floating label headings for the contact form
 //     $(function() {
 //       $("body").on("input propertychange", ".floating-label-form-group", function(e) {
