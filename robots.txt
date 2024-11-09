@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Disallow: /private/
+Disallow: /admin/
+Disallow: /includes/
+
+# Allow search engines to access images
+Allow: /images/
+
+# Sitemap location
+Sitemap: https://napoleonmithras.github.io/sitemap.xml
+
+# Crawl-delay for all bots
+Crawl-delay: 10 
