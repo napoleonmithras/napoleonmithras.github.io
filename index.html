@@ -50,17 +50,16 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #0a192f;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 200;
-            transition: opacity 0.3s ease-out;
             background: linear-gradient(
                 135deg,
                 rgba(10, 25, 47, 0.95) 0%,
                 rgba(17, 34, 64, 0.95) 100%
             );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            transition: opacity 0.3s ease-out;
             backdrop-filter: blur(10px);
         }
 
@@ -72,23 +71,13 @@
             position: relative;
         }
 
-        .splash::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2364ffda' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.1;
-            animation: moveBackground 30s linear infinite;
-        }
-
-        @keyframes moveBackground {
-            0% {
-                transform: translate(-50%, -50%) rotate(0deg);
-            }
-            100% {
-                transform: translate(-50%, -50%) rotate(360deg);
-            }
+        .splash-logo {
+            color: #64ffda;
+            font-size: 2.5rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
         }
 
         .loading-bar-container {
@@ -114,22 +103,6 @@
             animation: loadingAnimation 2s ease infinite;
         }
 
-        .loading-bar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(100, 255, 218, 0.8),
-                transparent
-            );
-            animation: loadingGlow 2s ease infinite;
-        }
-
         @keyframes loadingAnimation {
             0% {
                 transform: translateX(-100%);
@@ -139,45 +112,9 @@
             }
         }
 
-        @keyframes loadingGlow {
-            0% {
-                opacity: 0;
-                transform: translateX(-100%);
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: translateX(100%);
-            }
-        }
-
         .splash.fade {
             opacity: 0;
             pointer-events: none;
-        }
-
-        /* Add this if you want to show a logo or text above the loading bar */
-        .splash-logo {
-            color: #64ffda;
-            font-size: 2.5rem;
-            font-weight: 600;
-            letter-spacing: 2px;
-            margin-bottom: 1rem;
-            opacity: 0;
-            animation: fadeIn 0.5s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         /* Main Styles */
@@ -801,7 +738,6 @@
         section {
             background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(5px);
-            // ... keep other section styles ...
         }
 
         /* Add to existing styles */
@@ -1694,20 +1630,14 @@
         // Splash Screen Animation
         document.addEventListener('DOMContentLoaded', function() {
             const splash = document.querySelector('.splash');
-            const startTime = Date.now();
             
-            window.addEventListener('load', function() {
-                const loadTime = Date.now() - startTime;
-                const minDisplayTime = 2000; // Changed from 1000 to 2000 milliseconds (2 seconds)
-                
-                if (loadTime < minDisplayTime) {
-                    setTimeout(() => {
-                        splash.classList.add('fade');
-                    }, minDisplayTime - loadTime);
-                } else {
-                    splash.classList.add('fade');
-                }
-            });
+            // Show splash screen for exactly 2 seconds
+            setTimeout(() => {
+                splash.classList.add('fade');
+                setTimeout(() => {
+                    splash.style.display = 'none'; // Completely remove splash after fade
+                }, 300); // Match the fade transition duration
+            }, 2000);
         });
 
         // Smooth Scrolling
