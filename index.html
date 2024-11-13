@@ -2212,34 +2212,128 @@
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.cells.min.js" defer></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
+    <!-- Add structured data for better SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Napoleon Mithras",
+      "jobTitle": "Full-Stack & Mobile Developer",
+      "url": "https://napoleonmithras.gihub.com",
+      "sameAs": [
+        "https://linkedin.com/in/nmithras",
+        "https://github.com/napoleonmithras"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Freelance"
+      },
+      "knowsAbout": [
+        "Full-Stack Development",
+        "Mobile App Development",
+        "React",
+        "Node.js",
+        "Laravel",
+        "PHP",
+        "PostgreSQL",
+        "Python"
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Napoleon Mithras - Full-Stack & Mobile Developer",
+      "url": "https://napoleonmithras.github.com",
+      "description": "Professional portfolio of Napoleon Mithras, a Full-Stack & Mobile Developer specializing in creating exceptional digital experiences.",
+      "potentialAction": {
+        "@type": "ContactAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://calendly.com/mithras_napoleon"
+        },
+        "name": "Schedule a Call"
+      }
+    }
+    </script>
+
+    <!-- Single initialization script -->
     <script>
-        // All initialization functions defined first
+        // Split initialization into critical and non-critical tasks
+        const initializeCriticalFeatures = () => {
+            initializeSplashScreen();
+            initializeNavbar();
+            initializeMobileMenu();
+        };
+
+        const initializeNonCriticalFeatures = () => {
+            // Queue tasks with different priorities
+            const tasks = [
+                { fn: initializeVanta, priority: 1 },
+                { fn: initializeAOS, priority: 2 },
+                { fn: initializeProjectCards, priority: 2 },
+                { fn: initializeSmoothScrolling, priority: 3 }
+            ];
+
+            const executeTask = (task, deadline) => {
+                if (deadline.timeRemaining() > 0 || deadline.didTimeout) {
+                    task.fn();
+                } else {
+                    requestIdleCallback(deadline => executeTask(task, deadline));
+                }
+            };
+
+            const processTasks = (priority) => {
+                const currentTasks = tasks.filter(task => task.priority === priority);
+                currentTasks.forEach(task => {
+                    requestIdleCallback(deadline => executeTask(task, deadline), {
+                        timeout: 1000
+                    });
+                });
+            };
+
+            const processNextPriority = (currentPriority = 1) => {
+                if (currentPriority <= 3) {
+                    processTasks(currentPriority);
+                    setTimeout(() => {
+                        processNextPriority(currentPriority + 1);
+                    }, 100);
+                }
+            };
+
+            processNextPriority();
+        };
+
+        // Function definitions
         const initializeSplashScreen = () => {
             const splash = document.querySelector('.splash');
             const loadingBar = document.querySelector('.loading-bar-container');
             
-            // Create particles
-            const particlesContainer = document.createElement('div');
-            particlesContainer.className = 'loading-particles';
-            loadingBar?.appendChild(particlesContainer);
+            if (loadingBar) {
+                const particlesContainer = document.createElement('div');
+                particlesContainer.className = 'loading-particles';
+                loadingBar.appendChild(particlesContainer);
 
-            // Generate particles
-            for (let i = 0; i < 20; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particlesContainer.appendChild(particle);
-                
-                const tx = (Math.random() - 0.5) * 100;
-                const ty = (Math.random() - 0.5) * 100;
-                const delay = Math.random() * 2;
-                const duration = 1 + Math.random();
-                
-                particle.style.cssText = `
-                    left: ${Math.random() * 100}%;
-                    --tx: ${tx}px;
-                    --ty: ${ty}px;
-                    animation: particleFloat ${duration}s ease-out ${delay}s infinite;
-                `;
+                for (let i = 0; i < 20; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particlesContainer.appendChild(particle);
+                    
+                    const tx = (Math.random() - 0.5) * 100;
+                    const ty = (Math.random() - 0.5) * 100;
+                    const delay = Math.random() * 2;
+                    const duration = 1 + Math.random();
+                    
+                    particle.style.cssText = `
+                        left: ${Math.random() * 100}%;
+                        --tx: ${tx}px;
+                        --ty: ${ty}px;
+                        animation: particleFloat ${duration}s ease-out ${delay}s infinite;
+                    `;
+                }
             }
 
             if (splash) {
@@ -2267,14 +2361,6 @@
                     menuToggle.classList.toggle('active');
                     navLinks.classList.toggle('active');
                     document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
-                });
-
-                document.addEventListener('click', (e) => {
-                    if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
-                        menuToggle.classList.remove('active');
-                        navLinks.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
                 });
             }
         };
@@ -2365,83 +2451,13 @@
             });
         };
 
-        // Split initialization into critical and non-critical tasks
-        const initializeCriticalFeatures = () => {
-            initializeSplashScreen();
-            initializeNavbar();
-            initializeMobileMenu();
-        };
-
-        // Split non-critical features into smaller chunks
-        const initializeNonCriticalFeatures = () => {
-            // Queue tasks with different priorities
-            const tasks = [
-                {
-                    fn: initializeVanta,
-                    priority: 1
-                },
-                {
-                    fn: initializeAOS,
-                    priority: 2
-                },
-                {
-                    fn: initializeProjectCards,
-                    priority: 2
-                },
-                {
-                    fn: initializeSmoothScrolling,
-                    priority: 3
-                }
-            ];
-
-            // Execute tasks based on priority
-            let lastFrameTime = performance.now();
-
-            const executeTask = (task, deadline) => {
-                if (deadline.timeRemaining() > 0 || deadline.didTimeout) {
-                    task.fn();
-                } else {
-                    requestIdleCallback(deadline => executeTask(task, deadline));
-                }
-            };
-
-            const processTasks = (priority) => {
-                const currentTasks = tasks.filter(task => task.priority === priority);
-                
-                currentTasks.forEach(task => {
-                    requestIdleCallback(deadline => executeTask(task, deadline), {
-                        timeout: 1000 // 1 second timeout
-                    });
-                });
-            };
-
-            // Process tasks in order of priority
-            const processNextPriority = (currentPriority = 1) => {
-                if (currentPriority <= 3) { // Max priority level
-                    processTasks(currentPriority);
-                    
-                    // Schedule next priority level
-                    setTimeout(() => {
-                        processNextPriority(currentPriority + 1);
-                    }, 100); // Small delay between priority levels
-                }
-            };
-
-            // Start processing tasks
-            processNextPriority();
-        };
-
-        // Progressive loading strategy with performance monitoring
+        // Initialize everything when DOM is ready
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize critical features immediately
             performance.mark('criticalStart');
             initializeCriticalFeatures();
             performance.mark('criticalEnd');
-            
-            // Monitor performance
             performance.measure('Critical Features', 'criticalStart', 'criticalEnd');
 
-            // Initialize non-critical features when idle
             if (document.readyState === 'complete') {
                 requestIdleCallback(() => initializeNonCriticalFeatures());
             } else {
@@ -2450,53 +2466,6 @@
                 });
             }
         });
-    </script>
-
-    <!-- Add structured data for better SEO -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Napoleon Mithras",
-      "jobTitle": "Full-Stack & Mobile Developer",
-      "url": "https://napoleonmithras.gihub.com",
-      "sameAs": [
-        "https://linkedin.com/in/nmithras",
-        "https://github.com/napoleonmithras"
-      ],
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Freelance"
-      },
-      "knowsAbout": [
-        "Full-Stack Development",
-        "Mobile App Development",
-        "React",
-        "Node.js",
-        "Laravel",
-        "PHP",
-        "PostgreSQL",
-        "Python"
-      ]
-    }
-    </script>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Napoleon Mithras - Full-Stack & Mobile Developer",
-      "url": "https://napoleonmithras.github.com",
-      "description": "Professional portfolio of Napoleon Mithras, a Full-Stack & Mobile Developer specializing in creating exceptional digital experiences.",
-      "potentialAction": {
-        "@type": "ContactAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://calendly.com/mithras_napoleon"
-        },
-        "name": "Schedule a Call"
-      }
-    }
     </script>
 </body>
 </html> 
